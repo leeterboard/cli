@@ -2,7 +2,7 @@
 use crate::{
     cmds::{
         completion_handler, Command, CompletionCommand, DataCommand, EditCommand, ExecCommand,
-        ListCommand, PickCommand, StatCommand, TestCommand,
+        LeaderboardCommand, ListCommand, PickCommand, StatCommand, TestCommand,
     },
     err::Error,
     flag::{Debug, Flag},
@@ -39,6 +39,7 @@ pub async fn main() -> Result<(), Error> {
             StatCommand::usage().display_order(6),
             TestCommand::usage().display_order(7),
             CompletionCommand::usage().display_order(8),
+            LeaderboardCommand::usage().display_order(9),
         ])
         .arg(Debug::usage())
         .arg_required_else_help(true);
@@ -63,6 +64,7 @@ pub async fn main() -> Result<(), Error> {
         Some(("stat", sub_m)) => Ok(StatCommand::handler(sub_m).await?),
         Some(("test", sub_m)) => Ok(TestCommand::handler(sub_m).await?),
         Some(("completions", sub_m)) => Ok(completion_handler(sub_m, &mut cmd)?),
+        Some(("leaderboard", sub_m)) => Ok(LeaderboardCommand::handler(sub_m).await?),
         _ => Err(Error::MatchError),
     }
 }
